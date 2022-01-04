@@ -14,13 +14,13 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 #data
-application_test=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/application_test.csv")
+application_test=pd.read_csv("db/application_test.csv")
 application_test_records=application_test.to_dict("records")
-application_test_preprocessing=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/application_test_preprocessing.csv")
+application_test_preprocessing=pd.read_csv("db/application_test_preprocessing.csv")
 application_test_preprocessing_records=application_test_preprocessing.to_dict("records")
-variables_importantes=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/variables_importantes.csv")
-predictions=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/predictions.csv")
-shap_values_client=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/shap_values_clients.csv")
+variables_importantes=pd.read_csv("db/variables_importantes.csv")
+predictions=pd.read_csv("db/predictions.csv")
+shap_values_client=pd.read_csv("db/shap_values_clients.csv")
 
 #modèle
 
