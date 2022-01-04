@@ -14,17 +14,17 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 #data
-application_test=pd.read_csv("C:/Users/Utilisateur/Documents/Projet7/application_test.csv")
+application_test=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/application_test.csv")
 application_test_records=application_test.to_dict("records")
-application_test_preprocessing=pd.read_csv("C:/Users/Utilisateur/Documents/Projet7/application_test_preprocessing.csv")
+application_test_preprocessing=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/application_test_preprocessing.csv")
 application_test_preprocessing_records=application_test_preprocessing.to_dict("records")
-variables_importantes=pd.read_csv("C:/Users/Utilisateur/Documents/Projet7/variables_importantes.csv")
-predictions=pd.read_csv("C:/Users/Utilisateur/Documents/Projet7/predictions.csv")
-shap_values_client=pd.read_csv("C:/Users/Utilisateur/Documents/Projet7/shap_values_client.csv")
+variables_importantes=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/variables_importantes.csv")
+predictions=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/predictions.csv")
+shap_values_client=pd.read_csv("C:/Users/Utilisateur/Documents/Projet-7/db/shap_values_clients.csv")
 
 #modèle
 
-modele = pickle.load(open('C:/Users/Utilisateur/Documents/Projet7/modele.pkl', 'rb'))
+modele = pickle.load(open('C:/Users/Utilisateur/Documents/Projet-7/db/modele.pkl', 'rb'))
 
 @app.route('/api/projet7/decision', methods=['GET'])
 def api_id():
