@@ -12,7 +12,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 import numpy as np
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
+#app.config["DEBUG"] = True
 
 #data
 application_test=pd.read_csv("db/application_test.csv")

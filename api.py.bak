@@ -1,4 +1,5 @@
 import flask
+from flask import Flask
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
