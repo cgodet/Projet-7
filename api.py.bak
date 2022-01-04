@@ -10,7 +10,7 @@ from sklearn.neighbors import NearestNeighbors
 os.environ["OMP_NUM_THREADS"] = "1"
 import numpy as np
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 app.config["DEBUG"] = True
 
 #data
