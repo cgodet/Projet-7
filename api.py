@@ -137,5 +137,9 @@ def json_dataframe_voisins():
     dataframe_voisins.set_index("SK_ID_CURR",inplace=True)
     dataframe_voisins.drop(index=id,inplace=True)
   return jsonify(dataframe_voisins.mean(axis=0).to_dict())
+  
+if __name__ == '__main__':
+    app.run()
 
-app.run(port=os.environ.get("PORT", 8080))
+
+#app.run(port=os.environ.get("PORT", 8080))

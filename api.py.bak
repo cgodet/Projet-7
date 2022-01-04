@@ -1,18 +1,15 @@
-import flask
-from flask import Flask
+from flask import Flask, request, jsonify
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from lightgbm import LGBMClassifier
 import pickle
 import os
-from flask import request, jsonify
 from sklearn.neighbors import NearestNeighbors
 os.environ["OMP_NUM_THREADS"] = "1"
 import numpy as np
 
 app = Flask(__name__)
-#app.config["DEBUG"] = True
 
 #data
 application_test=pd.read_csv("db/application_test.csv")
@@ -141,9 +138,4 @@ def json_dataframe_voisins():
     dataframe_voisins.drop(index=id,inplace=True)
   return jsonify(dataframe_voisins.mean(axis=0).to_dict())
 
-
- 
- 
- 
- 
-app.run()
+app.run(port=os.environ.get("PORT", 8080))
