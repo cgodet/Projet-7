@@ -24,7 +24,7 @@ shap_values_client=pd.read_csv("db/shap_values_clients.csv")
 
 #modèle
 
-modele = pickle.load(open('C:/Users/Utilisateur/Documents/Projet-7/db/modele.pkl', 'rb'))
+modele = pickle.load(open('db/modele.pkl', 'rb'))
 
 @app.route('/api/projet7/decision', methods=['GET'])
 def api_id():
