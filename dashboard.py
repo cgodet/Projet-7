@@ -21,8 +21,7 @@ import pip_api
 
 def main():
 
-    
-    API_URL = "https://apiprojet7.herokuapp.com/api/projet7"
+    API_URL = "https://apiprojet7.herokuapp.com/api/projet7/"
 
     # Liste des numéros de client
     @st.cache
