@@ -186,7 +186,7 @@ def main():
             
         
     # Configuration de la page streamlit
-    st.set_page_config(page_title='Loan application scoring dashboard',
+    st.set_page_config(page_title='Application prêt bancaire dashboard',
                        page_icon='random',
                        layout='centered',
                        initial_sidebar_state='auto')
@@ -202,7 +202,7 @@ def main():
     # Sélection du numéro du client
 
     SK_IDS = get_sk_id_list()
-    select_sk_id = st.sidebar.selectbox('Sélectionner le numéro du client:', SK_IDS, key=18)
+    select_sk_id = st.sidebar.selectbox('Sélectionner le numéro du client:', SK_IDS)
     st.write('Vous avez sélectionné: ', select_sk_id)
 
     # Données client (non transformé et transformé)

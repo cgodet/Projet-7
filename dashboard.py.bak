@@ -21,8 +21,8 @@ import pip_api
 
 def main():
 
-    API_URL = "http://127.0.0.1:5000/api/projet7/"
-    #API_URL = "https://apiprojet7.herokuapp.com/api/projet7"
+    #API_URL = "http://127.0.0.1:5000/api/projet7/"
+    API_URL = "https://apiprojet7.herokuapp.com/api/projet7"
 
     # Liste des numéros de client
     @st.cache
