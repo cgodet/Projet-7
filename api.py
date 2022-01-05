@@ -32,6 +32,8 @@ def api_id():
       id = int(request.args['id'])
   else:
       return "Error: No id field provided. Please specify an id."
+  application_test_preprocessing=pd.read_csv("db/application_test_preprocessing.csv")
+  application_test_preprocessing.drop(columns="TARGET",inplace=True)
   modele_pred_test=modele.predict(application_test_preprocessing)
   predictions_test=pd.DataFrame()
   predictions_test['SK_ID_CURR']=application_test['SK_ID_CURR']
