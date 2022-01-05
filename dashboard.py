@@ -193,7 +193,7 @@ def main():
     # Titre du dashboard
     st.title('Dashboard application prêt bancaire')
     st.header("Cyril GODET - Projet 7")
-    path = "C:/Users/Utilisateur/Documents/Projet7/logo.png"
+    path = "logo.png"
     image = Image.open(path)
     st.sidebar.image(image, width=180)
 
