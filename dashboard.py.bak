@@ -16,6 +16,7 @@ from sklearn.neighbors import NearestNeighbors
 import matplotlib.patches as mpatches
 import plotly.express as px
 import plotly.graph_objs as go
+import pip_api
 
 
 def main():
