@@ -173,7 +173,7 @@ def main():
         data=response.json()  
         data_neigh = pd.Series(data).rename(select_sk_id)
         return data_neigh 
-    
+    #Liste des 20 variables importantes selon le modèle, ajouté des 20 variables les plus importantes du client donné, 40 variables au total.
     @st.cache
     def get_all_features(select_sk_id):
         feature_importance=get_features_importances()
