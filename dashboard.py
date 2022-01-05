@@ -21,8 +21,8 @@ import pip_api
 
 def main():
 
-    #API_URL = "http://127.0.0.1:5000/api/projet7/"
-    API_URL = "https://apiprojet7.herokuapp.com/api/projet7"
+    API_URL = "http://127.0.0.1:5000/api/projet7/"
+    #API_URL = "https://apiprojet7.herokuapp.com/api/projet7"
 
     # Liste des numéros de client
     @st.cache
@@ -60,7 +60,7 @@ def main():
         data_cust = pd.Series(data[0]).rename(select_sk_id)
         return data_cust
     
-    @st.cache(allow_output_mutation=True)
+    @st.cache
     def get_application_test_preprocessing():
         # URL de la table application_test_preprocessing
         DATA_API_URL = API_URL + "application_test_preprocessing/all"
@@ -69,7 +69,7 @@ def main():
         # Conversion du JSON format en dictionnaire Python
         data = response.json()
         application_test_preprocessing=pd.DataFrame(data)
-        application_test_preprocessing.set_index("SK_ID_CURR", inplace=True)
+        #application_test_preprocessing.set_index("SK_ID_CURR", inplace=True)
         return application_test_preprocessing  
         
     @st.cache
@@ -83,7 +83,7 @@ def main():
         data_cust_prepro = pd.Series(data[0]).rename(select_sk_id)
         return data_cust_prepro
     
-    @st.cache(allow_output_mutation=True)
+    @st.cache
     def get_predictions():
         # URL de la table prédictions
         DATA_API_URL = API_URL + "predictions"
@@ -120,7 +120,7 @@ def main():
         return variables
     
     # 20 variables les plus importantes selon le modèle
-    @st.cache(allow_output_mutation=True)
+    @st.cache
     def get_features_importances():
         # URL de la liste de toutes les variables importantes selon le modèle
         DATA_API_URL = API_URL + "variables_importantes"
@@ -174,6 +174,7 @@ def main():
         data=response.json()  
         data_neigh = pd.Series(data).rename(select_sk_id)
         return data_neigh 
+        
     #Liste des 20 variables importantes selon le modèle, ajouté des 20 variables les plus importantes du client donné, 40 variables au total.
     @st.cache
     def get_all_features(select_sk_id):
@@ -205,14 +206,11 @@ def main():
     st.write('Vous avez sélectionné: ', select_sk_id)
 
     # Données client (non transformé et transformé)
-    predictions=get_predictions()
-    application_test_preprocessing_update=get_application_test_preprocessing()
-    importance_variables=get_variables_importantes()
     feature_importance_client=get_features_importances_client(select_sk_id)
-    all_variables=get_all_features(select_sk_id)
     X_cust= get_donnees_client(select_sk_id)
     X_cust_proc=get_donnees_client_preprocessing(select_sk_id)
     X_neigh=get_data_neigh(select_sk_id)
+    application_test_preprocessing_update=get_application_test_preprocessing()
 
     # Variables importantes du client
 
@@ -248,11 +246,6 @@ def main():
                                                           vmin=-1, vmax=1)
                                      .highlight_null('lightgrey'))
         
-        
-        
-        
-
-    
     # Scoring et décision du prêt
 
     if st.sidebar.checkbox("Scoring et décision du modèle", key=38):
@@ -286,7 +279,10 @@ def main():
         expander = st.expander("Concernant le modèle de classification")
 
         expander.write("La prédiction a été effectuée en utilisant le modèle de classification LightGBM (Light Gradient Boosting Machine)")
-
+    
+    all_variables=get_all_features(select_sk_id)
+        
+    importance_variables=get_variables_importantes()
 
     if st.sidebar.checkbox("Importance des variables", key=29):
 
@@ -301,7 +297,7 @@ def main():
         plt.xlabel("Importance variables")
         
         st.pyplot(fig)
-        
+    
     if st.sidebar.checkbox("Boxplot des variables principales"):
         
         st.header("Boxplot des variables principales")
@@ -315,22 +311,22 @@ def main():
                                    
         # Echantillon de 20000 clients choisis au hasard
         
-        df_elements = application_test_preprocessing_update.sample(n=20000)
+        #df_elements = application_test_preprocessing_update.sample(n=20)
         
-        target=pd.Series(predictions.loc[df_elements.index]["TARGET_pred"],index=df_elements.index, dtype=float)
+        #target=pd.Series(predictions.loc[application_test_preprocessing.index]["TARGET_pred"],index=application_test_preprocessing.index, dtype=float)
         
-        df_sample=pd.concat([df_elements, target.to_frame("target")], axis=1)
+        #df_sample=pd.concat([df_elements, target.to_frame("target")], axis=1)
         
-        df_sample_global=df_sample.reset_index()
+        df=application_test_preprocessing_update
         
-        df_sample_global = df_sample_global.melt(id_vars=['SK_ID_CURR', 'target'],  # SK_ID_CURR
+        df = df.melt(id_vars=['TARGET'],  
                                    value_vars=disp_cols,
                                    var_name="variables",
                                    value_name="values")
                 
         fig, ax = plt.subplots(figsize=(15,8))
         
-        sns.boxplot(data=df_sample_global, x="variables", y="values", hue="target", linewidth=1,
+        sns.boxplot(data=df, x="variables", y="values", hue="TARGET", linewidth=1,
                 width=0.4, palette=['tab:green', 'tab:red'], showfliers=False, saturation=0.5,
                 ax=ax)
         
@@ -340,7 +336,7 @@ def main():
         
         expander = st.beta_expander("Explications sur les boxplots")
 
-        expander.write("Les boxplots ont été réalisés sur un échantillon aléatoire de 20 000 clients")
+        expander.write("Les boxplots ont été réalisés sur tout l'échantillon")
 
     if st.sidebar.checkbox('Nuage de points des variables principales'):
 
@@ -354,15 +350,15 @@ def main():
         'Sélectionner la deuxième variable',
         all_variables)
         
-        df_elements_nuage = application_test_preprocessing_update.sample(n=20000)
+        #df_elements_nuage = application_test_preprocessing_update.sample(n=20)
     
-        target_nuage=pd.Series(predictions.loc[df_elements_nuage.index]["TARGET_pred"],index=df_elements_nuage.index, dtype=float)
+        #target_nuage=pd.Series(predictions.loc[df_elements_nuage.index]["TARGET_pred"],index=df_elements_nuage.index, dtype=float)
         
-        df_sample_nuage=pd.concat([df_elements_nuage, target_nuage.to_frame("target")], axis=1)
+        #df_sample_nuage=pd.concat([df_elements_nuage, target_nuage.to_frame("target")], axis=1)
         
-        df_sample_global_nuage=df_sample_nuage.reset_index()
+        df_nuage=application_test_preprocessing_update
     
-        df_sample_boxplot = df_sample_global_nuage.melt(id_vars=['SK_ID_CURR', 'target'],  # SK_ID_CURR
+        df_nuage_boxplot = df_nuage.melt(id_vars=['TARGET'],  
                                    value_vars=option1,
                                    var_name="variables",
                                    value_name="values")
@@ -371,7 +367,7 @@ def main():
     
             fig, ax = plt.subplots(figsize=(15,8))
         
-            sns.boxplot(data=df_sample_boxplot, x="variables", y="values", hue="target", linewidth=1,
+            sns.boxplot(data=df_nuage_boxplot, x="variables", y="values", hue="TARGET", linewidth=1,
                 width=0.4, palette=['tab:green', 'tab:red'], showfliers=False, saturation=0.5,
                 ax=ax)
         
@@ -381,9 +377,9 @@ def main():
     
             fig, ax = plt.subplots(figsize=(15,8))
     
-            sns.scatterplot(data=df_sample_global_nuage, x=option1, y=option2, hue="target", palette=['tab:green', 'tab:blue'], legend=False, ax=ax)
+            sns.scatterplot(data=df_nuage, x=option1, y=option2, hue="TARGET", palette=['tab:green', 'tab:blue'], legend=False, ax=ax)
         
-            plt.scatter(data=df_sample_global_nuage[df_sample_global_nuage["SK_ID_CURR"]==select_sk_id], x=option1, y=option2, c="red")
+            plt.scatter(data=df_nuage[df_nuage["SK_ID_CURR"]==select_sk_id], x=option1, y=option2, c="red")
         
             red_patch = mpatches.Patch(color='green', label='Prêt accepté')
         
