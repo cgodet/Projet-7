@@ -21,8 +21,8 @@ import pip_api
 
 def main():
 
-    API_URL = "https://apiprojet7.herokuapp.com/api/projet7"
-
+    #API_URL = "https://apiprojet7.herokuapp.com/api/projet7/"
+    API_URL ="http://127.0.0.1:5000/api/projet7/"
     # Liste des numéros de client
     @st.cache
     def get_sk_id_list():
@@ -119,7 +119,7 @@ def main():
         return variables
     
     # 20 variables les plus importantes selon le modèle
-    @st.cache
+    @st.cache(allow_output_mutation=True)
     def get_features_importances():
         # URL de la liste de toutes les variables importantes selon le modèle
         DATA_API_URL = API_URL + "variables_importantes"
@@ -291,7 +291,7 @@ def main():
         
         ax = fig.add_subplot(111)
 
-        plt.barh(all_variables[0:20], importance_variables.iloc[0:20]['Importances'])
+        plt.barh(get_features_importances(), list(get_variables_importantes().iloc[0:20]['Importances']))
         
         plt.xlabel("Importance variables")
         
@@ -304,17 +304,8 @@ def main():
         st.markdown("***Variables importantes modèle***")
         
         disp_cols = st.multiselect('Choisir les variables à afficher:',
-                                   all_variables[0:10],
-                                   default=all_variables[0:10])
-        
-                                   
-        # Echantillon de 20000 clients choisis au hasard
-        
-        #df_elements = application_test_preprocessing_update.sample(n=20)
-        
-        #target=pd.Series(predictions.loc[application_test_preprocessing.index]["TARGET_pred"],index=application_test_preprocessing.index, dtype=float)
-        
-        #df_sample=pd.concat([df_elements, target.to_frame("target")], axis=1)
+                                   get_features_importances()[0:10],
+                                   default=get_features_importances()[0:10])
         
         df=application_test_preprocessing_update
         
@@ -348,12 +339,6 @@ def main():
         option2= st.selectbox(
         'Sélectionner la deuxième variable',
         all_variables)
-        
-        #df_elements_nuage = application_test_preprocessing_update.sample(n=20)
-    
-        #target_nuage=pd.Series(predictions.loc[df_elements_nuage.index]["TARGET_pred"],index=df_elements_nuage.index, dtype=float)
-        
-        #df_sample_nuage=pd.concat([df_elements_nuage, target_nuage.to_frame("target")], axis=1)
         
         df_nuage=application_test_preprocessing_update
     
