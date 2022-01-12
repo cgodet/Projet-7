@@ -291,7 +291,7 @@ def main():
         
         ax = fig.add_subplot(111)
 
-        plt.barh(get_features_importances(), list(get_variables_importantes().iloc[0:20]['Importances']))
+        plt.barh(list(get_variables_importantes().iloc[0:20]['Features']), list(get_variables_importantes().iloc[0:20]['Importances']))
         
         plt.xlabel("Importance variables")
         
